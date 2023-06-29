@@ -3,19 +3,26 @@
 
 This is an image search demo that uses Marqo to do multimodel search with weighted queries. The entire program is designed to run locally using the Marqo docker image on your own machine. All data is provided by Marqo via S3 and will be automatically indexed when you run the app.
 
+__NOTE: By default this application starts with 10,000 images which means that there may not be relevant results for all searches. The images you get are randomised.__ (Edit `.env.local` to add more images).
+
 <p align="center">
   <img src="readme_assets/shirt1.gif"/>
 </p>
 
 # Index
 
-+ [Running Marqo](#running-marqo)
-    + [Running on CPU](#running-on-cpu)
-    + [Running on GPU](#running-on-gpu)
-    + [Running on M1 or M2](#running-on-gpu)
-+ [Dependencies](#dependencies)
-+ [Running the Application](#running-the-application)
-+ [Re-indexing](#re-indexing-data)
+- [Marqo E-Commerce Local Search Demo](#marqo-e-commerce-local-search-demo)
+- [Index](#index)
+- [Running Marqo](#running-marqo)
+    - [Running on CPU](#running-on-cpu)
+    - [Running on GPU](#running-on-gpu)
+    - [Running on M1 or M2](#running-on-m1-or-m2)
+- [Dependencies](#dependencies)
+    - [Make virutal environment](#make-virutal-environment)
+    - [Activate the virtual environment](#activate-the-virtual-environment)
+    - [Install requirements](#install-requirements)
+- [Running the Application](#running-the-application)
+- [Re-Indexing Data](#re-indexing-data)
 
 # Running Marqo
 
