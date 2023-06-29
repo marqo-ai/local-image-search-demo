@@ -1,0 +1,6 @@
+flask 
+marqo 
+pandas  
+python-dotenv
+tqdm
+colorama
