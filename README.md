@@ -68,7 +68,7 @@ Once that is done, open another terminal and run:
 docker rm -f marqo; docker run --name marqo --privileged \
     -p 8882:8882 --add-host host.docker.internal:host-gateway \
     -e "OPENSEARCH_URL=https://localhost:9200" \
-    marqoai/marqo:latest
+    marqoai/marqo:1.2.0
 ```
 
 # Dependencies
