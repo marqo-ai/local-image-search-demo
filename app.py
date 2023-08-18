@@ -1,11 +1,4 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    jsonify
-)
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import os
 import marqo
 from index_data import setup_application
