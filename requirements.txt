@@ -1,6 +1,6 @@
-flask 
-marqo 
-pandas  
-python-dotenv
-tqdm
-colorama
+colorama==0.4.6
+Flask==2.3.2
+marqo==1.2.4
+pandas==2.0.1
+python-dotenv==1.0.0
+tqdm==4.66.1

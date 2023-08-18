@@ -30,9 +30,9 @@ The steps and command for different devices are provided below.
 
 ### Running on CPU
 ```
-docker pull marqoai/marqo:latest
+docker pull marqoai/marqo:1.2.0
 docker rm -f marqo
-docker run --name marqo -it --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:latest
+docker run --name marqo -it --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:1.2.0
 ```
 ### Running on GPU
 
@@ -54,7 +54,7 @@ sudo apt-get install -y nvidia-docker2
 ```
 Once nvidia-docker2 is installed, you can run Marqo with `--gpus all`:
 ```
-docker run --name marqo --gpus all --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:latest
+docker run --name marqo --gpus all --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:1.2.0
 ```
 
 ### Running on M1 or M2
@@ -98,7 +98,6 @@ pip install -r requirements.txt
 Before you run the application you may want to configure the environment variable to suite your system. There are three that are used:
 ```
 N_DOCUMENTS=<number of documents to use in the index, removing the will use all documents>
-MARQO_DEVICE=<the device to use for Marqo, must be cpu or cuda>
 MARQO_INDEX_NAME=<the name of the index to create and use, the default should be fine>
 ```
 

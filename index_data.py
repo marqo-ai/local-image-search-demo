@@ -12,7 +12,6 @@ load_dotenv(dotenv_path=".env.local")
 marqo.set_log_level("WARN")
 
 N = os.getenv("N_DOCUMENTS", None)
-DEVICE = os.getenv("MARQO_DEVICE", "cpu")
 CLIENT = marqo.Client()
 INDEX_NAME = os.getenv("MARQO_INDEX_NAME", None)
 REQUEST_CHUNK_SIZE = 16
@@ -87,7 +86,7 @@ def get_data() -> Dict[str, str]:
     """
     Fetch the dataset from S3
     """
-    filename = "https://marqo-overall-demo-assets.s3.us-west-2.amazonaws.com/ecommerce_meta_data.csv"
+    filename = "https://marqo-overall-demo-assets.s3.us-west-2.amazonaws.com/ecommerce_meta_data_clean.csv"
     data = pd.read_csv(filename, nrows=int(N) if N is not None else None)
     data["image"] = data["s3_http"]
     documents = data[["image"]].to_dict(orient="records")
@@ -104,13 +103,11 @@ def index_data(documents: Dict[str, str]) -> None:
     Index the data into Marqo
     """
     print(f"Indexing data with requests of {REQUEST_CHUNK_SIZE} documents...")
-    if DEVICE == "cpu":
-        print("You are using a CPU so indexing may be time consuming.")
     for i in tqdm(range(0, len(documents), REQUEST_CHUNK_SIZE), desc="Indexing data"):
         chunk = documents[i : i + REQUEST_CHUNK_SIZE]
 
         CLIENT.index(INDEX_NAME).add_documents(
-            chunk, client_batch_size=CLIENT_BATCH_SIZE, device=DEVICE
+            chunk, client_batch_size=CLIENT_BATCH_SIZE, tensor_fields=["image"]
         )
 
     print(
