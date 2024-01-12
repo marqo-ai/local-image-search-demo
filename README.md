@@ -16,7 +16,6 @@ __NOTE: By default this application starts with 10,000 images which means that t
 - [Running Marqo](#running-marqo)
     - [Running on CPU](#running-on-cpu)
     - [Running on GPU](#running-on-gpu)
-    - [Running on M1 or M2](#running-on-m1-or-m2)
 - [Dependencies](#dependencies)
     - [Make virutal environment](#make-virutal-environment)
     - [Activate the virtual environment](#activate-the-virtual-environment)
@@ -30,9 +29,7 @@ The steps and command for different devices are provided below.
 
 ### Running on CPU
 ```
-docker pull marqoai/marqo:1.2.0
-docker rm -f marqo
-docker run --name marqo -it --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:1.2.0
+docker run --name marqo -p 8882:8882 marqoai/marqo:2.0.0
 ```
 ### Running on GPU
 
@@ -54,23 +51,8 @@ sudo apt-get install -y nvidia-docker2
 ```
 Once nvidia-docker2 is installed, you can run Marqo with `--gpus all`:
 ```
-docker run --name marqo --gpus all --privileged -p 8882:8882 --add-host host.docker.internal:host-gateway marqoai/marqo:1.2.0
+docker run --name --gpus all marqo -p 8882:8882 marqoai/marqo:2.0.0
 ```
-
-### Running on M1 or M2
-
-In one terminal run:
-```
-docker rm -f marqo-os; docker run -p 9200:9200 -p 9600:9600 -e "discovery.type=single-node" marqoai/marqo-os:0.0.3-arm
-```
-Once that is done, open another terminal and run:
-```
-docker rm -f marqo; docker run --name marqo --privileged \
-    -p 8882:8882 --add-host host.docker.internal:host-gateway \
-    -e "OPENSEARCH_URL=https://localhost:9200" \
-    marqoai/marqo:1.2.0
-```
-
 # Dependencies
 Install the dependencies in a virtual environment.
 

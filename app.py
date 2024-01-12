@@ -40,7 +40,9 @@ def search_results():
     if negs:
         query_weights[negs] = -1.1
 
-    results = CLIENT.index(INDEX_NAME).search(query_weights, device=DEVICE, limit=12)
+    results = CLIENT.index(INDEX_NAME).search(query_weights, device=DEVICE, limit=30)
+
+    print(f"Found {len(results['hits'])} results in {results['processingTimeMs']} ms.")
 
     hits = results["hits"]
 
@@ -48,7 +50,7 @@ def search_results():
 
 
 if __name__ == "__main__":
-    indexes = {index.index_name for index in CLIENT.get_indexes()["results"]}
+    indexes = {index["indexName"] for index in CLIENT.get_indexes()["results"]}
     if INDEX_NAME not in indexes:
         setup_application()
     app.run(debug=True)
