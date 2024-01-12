@@ -49,9 +49,6 @@ def print_banner(message: str) -> None:
 
 
 def _create():
-    print(
-        "Creating your index, this might need to download open_clip/ViT-L-14/laion2b_s32b_b82k."
-    )
     print("Check docker logs for progress...")
     CLIENT.create_index(
         INDEX_NAME,
