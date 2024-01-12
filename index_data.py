@@ -48,19 +48,25 @@ def print_banner(message: str) -> None:
     )
 
 
+def _create():
+    print(
+        "Creating your index, this might need to download open_clip/ViT-L-14/laion2b_s32b_b82k."
+    )
+    print("Check docker logs for progress...")
+    CLIENT.create_index(
+        INDEX_NAME,
+        treat_urls_and_pointers_as_images=True,
+        model="open_clip/ViT-B-32/laion2b_s34b_b79k",
+        normalize_embeddings=True,
+    )
+
+
 def create_index() -> None:
     """
     This function has a lot of extra checks to make it pretty hard to shoot yourself in the foot
     """
-    settings = {
-        "index_defaults": {
-            "treat_urls_and_pointers_as_images": True,
-            "model": "ViT-L/14",
-            "normalize_embeddings": True,
-        },
-    }
     try:
-        CLIENT.create_index(INDEX_NAME, settings_dict=settings)
+        _create()
         print("Finished creating index...")
     except Exception as e:
         print(colorama.Fore.RED + "Exception occured:" + colorama.Style.RESET_ALL)
@@ -73,7 +79,7 @@ def create_index() -> None:
         if choice == "y":
             try:
                 CLIENT.delete_index(INDEX_NAME)
-                CLIENT.create_index(INDEX_NAME, settings_dict=settings)
+                _create()
                 print("Finished creating index...")
             except Exception as e:
                 print(
@@ -87,14 +93,17 @@ def get_data() -> Dict[str, str]:
     Fetch the dataset from S3
     """
     filename = "https://marqo-overall-demo-assets.s3.us-west-2.amazonaws.com/ecommerce_meta_data_clean.csv"
-    data = pd.read_csv(filename, nrows=int(N) if N is not None else None)
+    data = pd.read_csv(filename)
     data["image"] = data["s3_http"]
-    documents = data[["image"]].to_dict(orient="records")
+    documents = data[["image", "title"]].to_dict(orient="records")
     for i in range(len(documents)):
         documents[i]["_id"] = documents[i]["image"].split("/")[-1]
 
     random.shuffle(documents)
     print("Data fetched.\n")
+    if N is not None:
+        documents = documents[: int(N)]
+
     return documents
 
 
@@ -107,7 +116,15 @@ def index_data(documents: Dict[str, str]) -> None:
         chunk = documents[i : i + REQUEST_CHUNK_SIZE]
 
         CLIENT.index(INDEX_NAME).add_documents(
-            chunk, client_batch_size=CLIENT_BATCH_SIZE, tensor_fields=["image"]
+            chunk,
+            client_batch_size=CLIENT_BATCH_SIZE,
+            mappings={
+                "image_title_multimodal": {
+                    "type": "multimodal_combination",
+                    "weights": {"title": 0.1, "image": 0.9},
+                }
+            },
+            tensor_fields=["image_title_multimodal"],
         )
 
     print(
