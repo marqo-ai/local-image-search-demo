@@ -35,21 +35,12 @@ docker run --name marqo -p 8882:8882 marqoai/marqo:2.0.0
 
 Currently, only CUDA capable (Nvidia) GPU's are supported. If you have a GPU on the host machine and want to use it with Marqo, there are two things to do:
 
-1. Install nvidia-docker2.
-2. Add a --gpus all flag to the Docker run command. Note that this flag should appear after the run command but before the end.
+1. Install NVIDIA Container Toolkit.
+2. Add a `--gpus all` flag to the Docker run command. Note that this flag should appear after the run command but before the end.
 
-Install nvidia-docker2 which is required for the GPU to work with Docker. Steps for an Ubuntu machine are provided below. For more detail refer to [the original instructions](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
-```
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
-            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+Install NVIDIA Container Toolkit which is required for the GPU to work with Docker. For more detail refer to [the original instructions](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
 
-sudo apt-get update
-sudo apt-get install -y nvidia-docker2
-```
-Once nvidia-docker2 is installed, you can run Marqo with `--gpus all`:
+Once NVIDIA Container Toolkit is installed, you can run Marqo with `--gpus all`:
 ```
 docker run --name --gpus all marqo -p 8882:8882 marqoai/marqo:2.0.0
 ```
@@ -77,7 +68,7 @@ pip install -r requirements.txt
 
 # Running the Application
 
-Before you run the application you may want to configure the environment variable to suite your system. There are three that are used:
+Before you run the application you may want to configure the environment variable to suite your system. There are two that are used:
 ```
 N_DOCUMENTS=<number of documents to use in the index, removing the will use all documents>
 MARQO_INDEX_NAME=<the name of the index to create and use, the default should be fine>
@@ -85,15 +76,14 @@ MARQO_INDEX_NAME=<the name of the index to create and use, the default should be
 
 If you are on CPU then a high N_DOCUMENTS may take hours to index.
 
-Run the server:
+Index the data:
+```
+python3 index_data.py
+```
+
+Run the server (Note: search may be slow if indexing is still running - especially on a CPU):
 ```
 python3 app.py
 ```
 
-This will first check if the index exists on your machine. If it doesn't then it will be automatically created using `N_DOCUMENTS` documents.
-
-# Re-Indexing Data
-If you wish to index the data again you can run the index_data script directly. If the index already exists then you will be prompted incase you want to replace it.
-```
-python3 index_data.py
-```
+(This will first check if the index exists on your machine. If it doesn't then it will be automatically created using `N_DOCUMENTS` documents.)
