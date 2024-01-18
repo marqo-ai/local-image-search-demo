@@ -1,7 +1,7 @@
 
 # Marqo E-Commerce Local Search Demo
 
-This is an image search demo that uses Marqo to do multimodel search with weighted queries. The entire program is designed to run locally using the Marqo docker image on your own machine. All data is provided by Marqo via S3 and will be automatically indexed when you run the app.
+This is an image search demo that uses Marqo to do multimodel search with weighted queries. The entire program is designed to run locally using the Marqo docker image on your own machine. All data is provided by Marqo via S3 and will be automatically indexed when you run the app. The model used for the application is ```open_clip/ViT-B-32/laion2b_s34b_b79k```, but Marqo can also support hundreds of other open source embedding models, see: https://docs.marqo.ai/2.0.0/Guides/Models-Reference/dense_retrieval/
 
 __NOTE: By default this application starts with 10,000 images which means that there may not be relevant results for all searches. The images you get are randomised.__ (Edit `.env.local` to add more images).
 
