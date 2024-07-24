@@ -33,7 +33,9 @@ docker run --name marqo -p 8882:8882 marqoai/marqo:2.0.0
 ```
 ### Running on GPU
 
-Currently, only CUDA capable (Nvidia) GPU's are supported. If you have a GPU on the host machine and want to use it with Marqo, there are two things to do:
+Currently, only CUDA capable (Nvidia) GPU's are supported. For instructions on running on GPU with AWS, the following guide will help you configure the correct AMI. https://docs.marqo.ai/latest/Guides/using_marqo_with_a_gpu/. Note that if you're running on AWS, using the AMI is highly recommended as opposed to installing the toolkit manually.
+
+Alternatively, you can follow the below instructions:
 
 1. Install NVIDIA Container Toolkit.
 2. Add a `--gpus all` flag to the Docker run command. Note that this flag should appear after the run command but before the end.
